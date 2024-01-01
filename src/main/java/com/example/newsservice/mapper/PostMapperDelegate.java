@@ -21,32 +21,10 @@ public abstract class PostMapperDelegate implements PostMapper{
     @Override
     public Post requestToPost(UpsertPostRequest request) {
 
-        Long categoryId = request.getCategoryId();
-        Long userId = request.getUserId();
-
-        if (categoryId == null) {
-            throw new IllegalArgumentException("Category ID cannot be null");
-        }
-
-        if (userId == null) {
-            throw new IllegalArgumentException("User ID cannot be null");
-        }
-
-        Category category = dbCategoryService.findById(categoryId);
-        if (category == null) {
-            throw new EntityNotFoundException("Category with ID " + categoryId + " not found");
-        }
-
-        User user = dbUserService.findById(userId);
-        if (user == null) {
-            throw new EntityNotFoundException("User with ID " + userId + " not found");
-        }
-
         Post post = new Post();
-        post.setUser(user);
-        post.setCategory(category);
+        post.setUser(dbUserService.findById(request.getUserId()));
+        post.setCategory(dbCategoryService.findById(request.getCategoryId()));
         post.setPost(request.getPost());
-
 
         return post;
     }
@@ -59,3 +37,31 @@ public abstract class PostMapperDelegate implements PostMapper{
         return post;
     }
 }
+
+
+
+//        Long categoryId = request.getCategoryId();
+//        Long userId = request.getUserId();
+//
+//        Category category = dbCategoryService.findById(categoryId);
+//        User user = dbUserService.findById(userId);
+//
+////        request.setCategoryId(categoryId);
+////        request.setUserId(userId);
+//
+//        if (categoryId == null) {
+//            throw new IllegalArgumentException("Category ID cannot be null");
+//        }
+//
+//        if (userId == null) {
+//            throw new IllegalArgumentException("User ID cannot be null");
+//        }
+//
+//        if (category == null) {
+//            throw new EntityNotFoundException("Category with ID " + categoryId + " not found");
+//        }
+//
+//
+//        if (user == null) {
+//            throw new EntityNotFoundException("User with ID " + userId + " not found");
+//        }

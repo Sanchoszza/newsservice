@@ -57,6 +57,8 @@ public class PostServiceImpl implements PostService {
 
         Category category =categoryService.findById(post.getCategory().getId());
         User user = userService.findById(post.getUser().getId());
+        post.setCategory(category);
+        post.setUser(user);
         return postRepository.save(post);
     }
 
